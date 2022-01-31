@@ -13,6 +13,6 @@
     <div id="root"></div>
 
     {{-- JS VUE --}}
-    <script src="{{ asset('js/font-end.js') }}"></script>
+    <script src="{{ asset('js/front-end.js') }}"></script>
 </body>
 </html>
