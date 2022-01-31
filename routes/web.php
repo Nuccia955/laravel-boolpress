@@ -22,10 +22,12 @@ Auth::routes();
 /* Route for Admin */
 Route::middleware('auth')
     ->namespace('Admin')
-    ->name('admin')
+    ->name('admin.')
     ->prefix('admin')
     ->group( function () {
         Route::get('/', 'HomeController@index')->name('home');
+
+        Route::resource('/posts', 'PostController');
     });
 
 
