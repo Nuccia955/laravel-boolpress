@@ -101,6 +101,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {}
@@ -598,8 +600,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "conatiner text-center py-5" }, [
-      _c("h1", [_vm._v("Work in progress")]),
+    return _c("div", { staticClass: "main-content py-5" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("h1", { staticClass: "text-center" }, [_vm._v("Work in progress")]),
+      ]),
     ])
   },
 ]

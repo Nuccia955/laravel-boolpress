@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Post;
 
 class PostController extends Controller
@@ -27,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -38,18 +39,52 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validation
+        $request->validate($this->validation_rules(), $this->error_messages());
+
+        $data = $request->all();
+
+        //new instance of post
+        $new_post = new Post();
+
+        //GEN UNIQUE SLUG
+        $slug = Str::slug($data['title'], '-');
+        $counter = 1;
+        $base_slug = $slug;
+
+        //check uniqueness of slug in table posts
+        while(Post::where('slug', $slug)->first()) {
+            //gen new slug
+            $slug = $base_slug . '-' . $counter;
+            $counter++;
+        }
+
+        //set new slug
+        $data['slug'] = $slug;
+
+        //set post
+        $new_post->fill($data);
+
+        //save in table posts of db
+        $new_post->save();
+
+        //return to details' page
+        return redirect()->route('admin.posts.show', $new_post->slug);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $post = Post::where('slug', $slug)->first();
+        if(! $post) {
+            abort(404);
+        }
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -58,9 +93,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -70,9 +105,35 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+         //validation
+         $request->validate($this->validation_rules(), $this->error_messages());
+
+        $data = $request->all();
+
+        //update if title is changed
+        if($data['title'] != $post->title) {
+            $slug = Str::slug($data['title'], '-');
+            $counter = 1;
+            $base_slug = $slug;
+
+            //check uniqueness of slug in table posts
+            while(Post::where('slug', $slug)->first()) {
+                //gen new slug
+                $slug = $base_slug . '-' . $counter;
+                $counter++;
+            }
+            $data['slug'] = $slug;
+        } 
+
+        else {
+            $data['slug'] = $post->slug;
+        }
+
+        $post->update($data);
+
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -81,8 +142,30 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('admin.posts.index')->with('deleted', $post->title);
+    }
+
+    /**
+     * method for group validation rules 
+     */
+    private function validation_rules() {
+        return [
+            'title'=>'required|max:255',
+            'body'=>'required',
+        ];
+    }
+
+    /**
+     * method for group error messages
+     */
+    private function error_messages() {
+        return [
+            'required'=>'Field :attribute required',
+            'max'=>'Max :max characters',
+        ];
     }
 }

@@ -1,6 +1,8 @@
 <template>
-    <div class="conatiner text-center py-5">
-        <h1>Work in progress</h1>
+    <div class="main-content py-5">
+        <div class="container">
+            <h1 class="text-center">Work in progress</h1>
+        </div>
     </div>
 </template>
 
