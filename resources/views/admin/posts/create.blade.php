@@ -21,6 +21,20 @@
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
 
+            <label for="category_id" class="mb-1">Category</label>
+            <select name="category_id" id="category_id" class="form-control mb-4">
+                <option value="">Uncathegorized</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            {{-- display error select --}}
+            @error('category_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
             <button class="btn btn-success" type="submit">Add post</button>
         </form>
     </section>    
