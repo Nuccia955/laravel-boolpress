@@ -29,6 +29,8 @@ Route::middleware('auth')
         Route::resource('/posts', 'PostController');
 
         Route::get('/categories/{id}', 'CategoryController@show')->name('category');
+
+        Route::get('/tags/{id}', 'TagController@show')->name('tag');
     });
 
 

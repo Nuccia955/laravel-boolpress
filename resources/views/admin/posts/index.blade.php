@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <section class="posts-archive container">
         <h1 class="mb-5 text-uppercase">Posts Archive</h1>
 
         @if (session('deleted'))
@@ -49,5 +49,18 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </section>
+
+    <section class="tags container">
+        <h5 class="mb-3">
+            Tags
+        </h5>
+        <ul>
+            @foreach ($tags as $tag)
+                <li>
+                    <a href="{{ route('admin.tag', $tag->id) }}">{{ $tag->title }}</a>
+                </li>
+            @endforeach
+        </ul>
+    </section>
 @endsection
