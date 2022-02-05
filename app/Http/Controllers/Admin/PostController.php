@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -30,7 +31,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -64,11 +66,17 @@ class PostController extends Controller
         //set new slug
         $data['slug'] = $slug;
 
+        
         //set post
         $new_post->fill($data);
-
+        
         //save in table posts of db
         $new_post->save();
+        
+        //create relation between 'posts' and 'tags'
+        if(array_key_exists('tags', $data)) {
+            $new_post->tags()->attach($data['tags']);
+        }
 
         //return to details' page
         return redirect()->route('admin.posts.show', $new_post->slug);
@@ -98,7 +106,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -136,6 +145,12 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if(array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+        }
+
         return redirect()->route('admin.posts.show', $post->slug);
     }
 
@@ -160,6 +175,7 @@ class PostController extends Controller
             'title'=>'required|max:255',
             'body'=>'required',
             'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id'
         ];
     }
 
@@ -170,7 +186,7 @@ class PostController extends Controller
         return [
             'required'=>'Field :attribute required',
             'max'=>'Max :max characters',
-            'category_id.exists' => 'Category not found'
+            'category_id.exists' => 'Category not found',
         ];
     }
 }

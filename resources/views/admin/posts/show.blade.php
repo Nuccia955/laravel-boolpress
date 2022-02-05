@@ -17,6 +17,19 @@
         </div>
 
         <p class="col-6 mb-3">{!! $post->body !!}</p>
+        <div class="tags mb-3">
+            @if (!$post->tags->isEmpty())
+                <h5 class="mb-1 text-uppercase">Tags</h5>
+                @foreach ($post->tags as $tag )
+                    <div class="badge bg-info text-light">
+                        {{ $tag->title }}
+                    </div>
+                @endforeach
+            @else
+                <p>No tags found for this post</p>
+            @endif
+        </div>
+
         <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Edit</a>
 
     </section>
