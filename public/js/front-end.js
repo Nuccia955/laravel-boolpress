@@ -1918,13 +1918,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {},
   data: function data() {
     return {
-      post: null,
+      posts: null,
       pagination: null
     };
   },
@@ -1932,8 +1945,8 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://127.0.0.1:8000/api/posts').then(function (response) {
-      _this.post = response.data.data;
-      console.log(_this.post);
+      _this.posts = response.data.data;
+      console.log(_this.posts);
       _this.pagination = {
         current: response.data.current_page,
         last: response.data.last_page
@@ -2428,22 +2441,40 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "main-content py-5" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("h1", { staticClass: "text-uppercase mb-5" }, [
-          _vm._v("Blog class #45"),
-        ]),
+  return _c("div", { staticClass: "main-content py-5" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("h1", { staticClass: "text-uppercase mb-5" }, [
+        _vm._v("Blog class #45"),
       ]),
-    ])
-  },
-]
+      _vm._v(" "),
+      _vm.posts
+        ? _c("section", { staticClass: "posts mb-4" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group list-group-flush" },
+              _vm._l(_vm.posts, function (post) {
+                return _c(
+                  "li",
+                  { key: "post-" + post.id, staticClass: "list-group-item" },
+                  [
+                    _c("h3", { staticClass: "mb-2" }, [
+                      _vm._v(_vm._s(post.title)),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(post.body))]),
+                  ]
+                )
+              }),
+              0
+            ),
+          ])
+        : _c("div", { staticClass: "loader text-center" }, [
+            _c("span", { staticClass: "fs-4" }, [_vm._v("Loading posts..")]),
+          ]),
+    ]),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
