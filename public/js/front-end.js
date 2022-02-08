@@ -1931,6 +1931,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
@@ -1953,6 +1954,12 @@ __webpack_require__.r(__webpack_exports__);
       };
       console.log(_this.pagination);
     });
+  },
+  methods: {
+    formatDate: function formatDate($postDate) {
+      var date = new Date($postDate);
+      return new Intl.DateTimeFormat('it-IT').format(date);
+    }
   }
 });
 
@@ -2457,8 +2464,12 @@ var render = function () {
                   "li",
                   { key: "post-" + post.id, staticClass: "list-group-item" },
                   [
-                    _c("h3", { staticClass: "mb-2" }, [
+                    _c("h3", { staticClass: "mb-1" }, [
                       _vm._v(_vm._s(post.title)),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "date mb-2" }, [
+                      _vm._v(_vm._s(_vm.formatDate(post.created_at))),
                     ]),
                     _vm._v(" "),
                     _c("p", [_vm._v(_vm._s(post.body))]),

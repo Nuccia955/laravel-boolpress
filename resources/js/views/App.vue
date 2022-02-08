@@ -6,7 +6,8 @@
             <section class="posts mb-4" v-if="posts">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item" v-for="post in posts" :key="`post-${post.id}`">
-                        <h3 class="mb-2">{{ post.title }}</h3>
+                        <h3 class="mb-1">{{ post.title }}</h3>
+                        <div class="date mb-2">{{ formatDate(post.created_at) }}</div>
                         <p>{{ post.body }}</p>
                     </li>
                 </ul>
@@ -44,6 +45,13 @@ export default {
                 };
                 console.log(this.pagination);
             })
+    },
+    methods: {
+        formatDate($postDate) {
+            const date = new Date($postDate);
+
+            return new Intl.DateTimeFormat('it-IT').format(date);
+        }
     }
 }
 </script>
