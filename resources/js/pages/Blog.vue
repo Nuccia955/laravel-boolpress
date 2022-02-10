@@ -8,7 +8,9 @@
                     <li class="list-group-item" v-for="post in posts" :key="`post-${post.id}`">
                         <h3 class="mb-1">{{ post.title }}</h3>
                         <div class="date mb-2">{{ formatDate(post.created_at) }}</div>
-                        <p>{{ post.body }}</p>
+                        <p class="mb-3">{{ post.body }}</p>
+
+                        <router-link class="btn btn-orange" :to="{name: 'post-detail', params: post.slug }">Show details</router-link>
                     </li>
                 </ul>
 
