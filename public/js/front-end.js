@@ -3409,7 +3409,10 @@ var render = function () {
                       {
                         staticClass: "btn btn-orange",
                         attrs: {
-                          to: { name: "post-detail", params: post.slug },
+                          to: {
+                            name: "post-detail",
+                            params: { slug: post.slug },
+                          },
                         },
                       },
                       [_vm._v("Show details")]
