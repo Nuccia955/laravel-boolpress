@@ -15,6 +15,9 @@ class PostController extends Controller
 
     public function show($slug) {
         $post = Post::where('slug', $slug)->with(['category', 'tags'])->first();
+        if($post->cover) {
+            $post->cover = url('storage/' . $post->cover);
+        }
         return response()->json($post);
     }
 }
