@@ -11,7 +11,7 @@ class Post extends Model
         'title',
         'slug',
         'body',
-        'is_new',
+        'cover',
     ];
 
     public function category() {
