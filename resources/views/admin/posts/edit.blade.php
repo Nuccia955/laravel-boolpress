@@ -64,8 +64,8 @@
 
             <label for="cover">Cover</label>
             @if ($post->cover)
-                <div class="cover d-block">
-                    <img src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                <div class="cover d-block mb-3">
+                    <img src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}" width="300px">
                 </div>
             @endif
             <input type="file" id="cover" name="cover" class="d-block mb-4">
