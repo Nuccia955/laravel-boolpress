@@ -16,7 +16,16 @@
             <a class="btn btn-success" href="{{ route('admin.posts.index') }}">Back to archive</a>
         </div>
 
-        <p class="col-6 mb-3">{!! $post->body !!}</p>
+        <div class="d-flex">
+            <p class="{{$post->cover ? 'col-6' : 'col-12'}}">{!! $post->body !!}</p>
+    
+            @if ($post->cover)
+                <div class="cover col-6">
+                    <img src="{{asset('storage/' . $post->cover) }}" alt="{{ $post->title }}" class="img-fluid">
+                </div>
+            @endif
+        </div>
+
         <div class="tags mb-3">
             @if (!$post->tags->isEmpty())
                 <h5 class="mb-1 text-uppercase">Tags</h5>

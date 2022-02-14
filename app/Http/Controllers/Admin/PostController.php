@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
@@ -48,6 +49,10 @@ class PostController extends Controller
         $request->validate($this->validation_rules(), $this->error_messages());
 
         $data = $request->all();
+
+        if(array_key_exists('cover', $data)) {
+            $data['cover'] = Storage::put('posts_covers', $data['cover']);
+        }
 
         //new instance of post
         $new_post = new Post();
@@ -125,6 +130,15 @@ class PostController extends Controller
 
         $data = $request->all();
 
+        if(array_key_exists('cover', $data)) {
+            //remove pre cover if exists
+            if($post->cover) {
+                Storage::delete($post->cover);
+            } 
+            //set new cover
+            $data['cover'] = Storage::put('posts_covers', $data['cover']);
+        }
+
         //update if title is changed
         if($data['title'] != $post->title) {
             $slug = Str::slug($data['title'], '-');
@@ -163,6 +177,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->cover) {
+            Storage::delete($post->cover);
+        }
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('deleted', $post->title);

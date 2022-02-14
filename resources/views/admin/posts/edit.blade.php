@@ -4,7 +4,7 @@
     <section class="create-post container">
         <h1 class="mb-5 text-uppercase">Edit {{ $post->title }}</h1>
 
-        <form action="{{ route('admin.posts.update', $post->id) }}" method="POST">
+        <form action="{{ route('admin.posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -59,6 +59,17 @@
                 @endforeach
             </div>
             @error('tags')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
+            <label for="cover">Cover</label>
+            @if ($post->cover)
+                <div class="cover d-block">
+                    <img src="{{ asset('storage/' . $post->cover) }}" alt="{{ $post->title }}">
+                </div>
+            @endif
+            <input type="file" id="cover" name="cover" class="d-block mb-4">
+            @error('cover')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
 
